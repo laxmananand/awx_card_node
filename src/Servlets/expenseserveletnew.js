@@ -34,16 +34,14 @@ router.post("/temporaryUnBlock", functions.temporaryUnBlockcards);
 router.post("/activeCard", functions.activeCard);
 router.post("/permanentBlock", functions.permanentBlockcards);
 
-
 // routers for awx
 
 router.get("/listcardsAWX", functions.listCards_AWX);
-router.get("/getsensitavecarddata_awx",functions.getcardsensitavedata_awx);
-router.get("/getcarddata_awx",functions.getcarddata_awx);
-router.post("/createCard_awx",functions.addVirtualCard_awx);
-router.post("/updateCard_awx/:card_id",functions.updateCard_awx);
+router.get("/getsensitavecarddata_awx", functions.getcardsensitavedata_awx);
+router.get("/getcarddata_awx", functions.getcarddata_awx);
+router.post("/createCard_awx", functions.addVirtualCard_awx);
+router.post("/updateCard_awx/:card_id", functions.updateCard_awx);
 
-router.post("/card-token",functions.fetchCardToken);
-
+router.post("/card-token", functions.fetchCardToken);
 
 export default router;

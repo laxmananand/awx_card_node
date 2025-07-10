@@ -747,45 +747,50 @@ export const listcards = async (req, res) => {
 
 export const listCards_AWX = async (req, res) => {
   try {
-    const authToken = req.headers.authorization;
-    const awxAccountId = req.headers.awxaccountid;
+    //const authToken = req.headers.authorization;
+    // const awxAccountId = req.headers.awxaccountid;
 
-    if (!authToken) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized: No auth token provided" });
-    }
+    // if (!authToken) {
+    //   return res
+    //     .status(401)
+    //     .json({ message: "Unauthorized: No auth token provided" });
+    // }
 
-    const {
-      card_status,
-      cardholder_id,
-      from_created_at,
-      nick_name,
-      page_num,
-      page_size,
-      to_created_at,
-    } = req.query;
+    // const {
+    //   card_status,
+    //   cardholder_id,
+    //   from_created_at,
+    //   nick_name,
+    //   page_num,
+    //   page_size,
+    //   to_created_at,
+    // } = req.query;
 
-    const url = process.env.VITE_AWX_baseUrl + constant.awx_cardurl;
+    const url = process.env.baseUrl_zoqq_cards + constant.listCards_AWX;
 
     const headers = {
-      "Content-Type": "application/json",
-      "x-on-behalf-of": awxAccountId,
-      Authorization: `${authToken}`,
+      // "Content-Type": "application/json",
+      // "x-on-behalf-of": awxAccountId,
+      //Authorization: `${authToken}`,
+      "x-api-key": process.env.x_api_key_zoqq,
+      "x-product-id": process.env.x_product_id || "SAVAAM0",
+      "x-user-id":
+        process.env.x_user_id || "2ec3aaa9-1b6a-4175-883f-0c47cf264718",
+      "x-request-id": "5b9a3696-85e9-4e52-96b3-12276dff9335F",
     };
 
-    const params = {};
-    if (card_status) params.card_status = card_status;
-    if (cardholder_id) params.cardholder_id = cardholder_id;
-    if (from_created_at) params.from_created_at = from_created_at;
-    if (nick_name) params.nick_name = nick_name;
-    if (page_num) params.page_num = page_num;
-    if (page_size) params.page_size = page_size;
-    if (to_created_at) params.to_created_at = to_created_at;
+    // const params = {};
+    // if (card_status) params.card_status = card_status;
+    // if (cardholder_id) params.cardholder_id = cardholder_id;
+    // if (from_created_at) params.from_created_at = from_created_at;
+    // if (nick_name) params.nick_name = nick_name;
+    // if (page_num) params.page_num = page_num;
+    // if (page_size) params.page_size = page_size;
+    // if (to_created_at) params.to_created_at = to_created_at;
 
-    const response = await axios.get(url, { headers, params });
+    const response = await axios.get(url, { headers });
 
-    return res.status(200).json(response.data.items);
+    return res.status(200).json(response.data);
   } catch (error) {
     console.error("AWX Card List Error:", error.message || error);
     return res.status(500).json({
