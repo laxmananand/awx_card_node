@@ -43,5 +43,7 @@ router.post("/createCard_awx", functions.addVirtualCard_awx);
 router.post("/updateCard_awx/:card_id", functions.updateCard_awx);
 
 router.post("/card-token", functions.fetchCardToken);
+router.get("/listCardHolders_AWX", functions.listCardHolders_AWX);
+router.get("/listCardsByCardHolderId_AWX", functions.listCardsByCardHolderId_AWX);
 
 export default router;

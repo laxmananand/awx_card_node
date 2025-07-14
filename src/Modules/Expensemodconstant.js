@@ -19,3 +19,5 @@ export const addcard_awx = "/api/v1/issuing/cards/create";
 export const updateCard_awx = "/api/v1/issuing/cards/";
 
 export const listCards_AWX = "/zoqq/api/v1/card";
+export const listCardHolders_AWX = "/zoqq/api/v1/card/cardholder";  
+export const listCardsByCardHolderId_AWX = "/zoqq/api/v1/card";

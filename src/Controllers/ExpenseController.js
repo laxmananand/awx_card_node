@@ -800,6 +800,83 @@ export const listCards_AWX = async (req, res) => {
   }
 };
 
+//Listcardholders_AWX
+
+export const listCardHolders_AWX = async (req, res) => {
+  try {
+    // const authToken = req.headers.authorization;
+    // const awxAccountId = req.headers.awxaccountid;
+
+    // if (!authToken) {
+    //   return res
+    //     .status(401)
+    //     .json({ message: "Unauthorized: No auth token provided" });
+    // }
+
+    const url = process.env.baseUrl_zoqq_cards + constant.listCardHolders_AWX;
+
+    const headers = {
+      
+      "x-api-key": process.env.x_api_key_zoqq,
+      "x-product-id": process.env.x_product_id || "SAVAAM0",
+      "x-user-id": process.env.x_user_id || "2ec3aaa9-1b6a-4175-883f-0c47cf264718",
+      "x-request-id": "1b497441-2c73-4af6-8087-7b8ff1f2ef49",
+      "Authorization": `Bearer ${process.env.zoqq_bearer_token}`,
+      "Cookie": process.env.zoqq_cookie || "AWSALB=gfgwVQUpbctTho62gPS9+MbMdD4QxUiXr7NAzJfeZTzJRT8uM374gLpp24oo69UEbgwSPSKVRawsWfaJqvCEtDhj81FHz9Q3+jrka60XLztQjfZEl5l3EEDs65jY; AWSALBCORS=gfgwVQUpbctTho62gPS9+MbMdD4QxUiXr7NAzJfeZTzJRT8uM374gLpp24oo69UEbgwSPSKVRawsWfaJqvCEtDhj81FHz9Q3+jrka60XLztQjfZEl5l3EEDs65jY"
+    };
+
+    const response = await axios.get(url, { headers });
+
+    return res.status(200).json(response.data);
+  } catch (error) {
+    console.error("AWX Card Holder List Error:", error.message || error);
+    return res.status(500).json({
+      status: "BAD_REQUEST",
+      message: "An error occurred while listing AWX card holders.",
+    });
+  }
+};
+
+
+// List cards by cardholder ID
+export const listCardsByCardHolderId_AWX = async (req, res) => {
+  try {
+      // Hardcoded ID for testing in Postman
+      const id = "0ef467c0-3e3d-4e0d-9e1d-ec678bf30fd6";
+      
+      // You can still check if ID exists, but it will always be the hardcoded value
+      if (!id) {
+          return res.status(400).json({
+              status: "BAD_REQUEST",
+              message: "Cardholder ID is required"
+          });
+      }
+
+      //const url = `${process.env.baseUrl_zoqq_cards}${constants.listCardsByCardHolderId}?id=${id}`;
+      const url = "https://developer.qa.zoqq.com:8075/zoqq/api/v1/card?id=" + id;
+      
+      const headers = {
+          "x-api-key": process.env.x_api_key_zoqq,
+          "x-product-id": process.env.x_product_id || "SAVAAM0",
+          "x-user-id": process.env.x_user_id || "2ec3aaa9-1b6a-4175-883f-0c47cf264718",
+          "x-request-id": req.headers['x-request-id'] || generateRequestId(),
+          "Authorization": `Bearer ${process.env.zoqq_bearer_token}`,
+          "Cookie": process.env.zoqq_cookie || "AWSALB=UXLtzVg0Bo/mU2qsMz768+CEDl25TiwQCt2H36DKD8OdqV/wIGV8fk3PLnEQ/e1xjQscdZZ+rgskf9BM1lwu3jaasFty8wvihPwSxnOwKb8aRQYgjHx6xz5foHWe; AWSALBCORS=UXLtzVg0Bo/mU2qsMz768+CEDl25TiwQCt2H36DKD8OdqV/wIGV8fk3PLnEQ/e1xjQscdZZ+rgskf9BM1lwu3jaasFty8wvihPwSxnOwKb8aRQYgjHx6xz5foHWe"
+      };
+
+      const response = await axios.get(url, { headers });
+      
+      return res.status(200).json(response.data);
+  } catch (error) {
+      console.error("AWX List Cards by Cardholder ID Error:", error.message || error);
+      return res.status(500).json({
+          status: "BAD_REQUEST",
+          message: "An error occurred while listing cards by cardholder ID.",
+      });
+  }
+};
+
+
 export const getcardsensitavedata_awx = async (req, res) => {
   try {
     const authToken = req.headers.authorization;
