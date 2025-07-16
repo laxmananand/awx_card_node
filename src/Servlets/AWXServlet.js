@@ -19,6 +19,10 @@ router.post("/getAccountRFIAWX", functions.FetchAccountRFIAWX);
 router.post("/create-cardholder-awx", functions.createCardholderAWX);
 router.get("/fetch-cardholder-awx", functions.fetchCardholderAWX);
 router.get("/fetch-card-awx", functions.fetchCardDetailsAWX);
+router.get(
+  "/fetch-cardholder-details-awx",
+  functions.fetchCardHolderDetailsAWX
+);
 
 router.post(
   "/upload-files-awx",
@@ -29,7 +33,7 @@ router.post("/respond-rfi-awx", functions.respondRFIAWX);
 
 router.get("/delete-cardholder-awx", functions.DeleteCardholderAWX);
 router.get("/invite-cardholder-awx", functions.InviteCardholderAWX);
-
+//laxman
 router.get("/card-details-awx", functions.CardDetailsAWX);
 router.get("/card-info-awx", functions.CardInfoAWX);
 router.post("/card-update-awx", functions.CardUpdateAWX);

@@ -2,6 +2,7 @@ import axios from "axios";
 import crypto from "crypto";
 import FormData from "form-data";
 import exportLog from "../Modules/exportLog.js";
+import * as constant from "../Modules/Expensemodconstant.js";
 
 //auto-deploy-test-1
 
@@ -360,7 +361,7 @@ export const createCardholderAWX = async (req, res) => {
     res.status(500).json({ status: "BAD_REQUEST", message: { error } });
   }
 };
-
+//laxman
 export const fetchCardholderAWX = async (req, res) => {
   const { accountId, authToken } = req.query;
   try {
@@ -390,6 +391,60 @@ export const fetchCardholderAWX = async (req, res) => {
     res.status(200).json(response.data);
   } catch (error) {
     exportLog("Create Cardholder AWX", "catch", null, null, null);
+
+    res.status(500).json({ status: "BAD_REQUEST", message: { error } });
+  }
+};
+
+//laxman
+export const fetchCardHolderDetailsAWX = async (req, res) => {
+  const { id } = req.query;
+  try {
+    const url = `${process.env.baseUrl_zoqq_cards}${constant.listCardHolders_AWX}?id=${id}`;
+    console.log("url: ", url);
+
+    if (!id) {
+      return res.status(400).json({
+        status: "BAD_REQUEST",
+        message: "id is required",
+      });
+    }
+
+    const headers = {
+      // "Content-Type": "application/json",
+      // Authorization: "Bearer " + authToken,
+      // "x-on-behalf-of": accountId,
+      "x-api-key": process.env.x_api_key_zoqq,
+      "x-product-id": process.env.x_product_id,
+      "x-user-id": req.headers["x-user-id"],
+      "x-request-id":
+        req.headers["x-request-id"] || "211dc6c5-ad34-4534-86df-823e8a1a75ea",
+    };
+
+    const response = await axios.get(url, { headers });
+
+    let obj = response.data;
+    if (obj) {
+      exportLog(
+        "Fetch Card Holder Details AWX",
+        "success",
+        null,
+        { url, headers },
+        obj
+      );
+    } else {
+      exportLog(
+        "Fetch Card Holder Details AWX",
+        "error",
+        null,
+        { url, headers },
+        obj
+      );
+    }
+
+    res.status(200).json(response.data);
+  } catch (error) {
+    exportLog("Fetch Card Holder Details AWX", "catch", null, null, null);
 
     res.status(500).json({ status: "BAD_REQUEST", message: { error } });
   }
@@ -609,14 +664,19 @@ export const InviteCardholderAWX = async (req, res) => {
 };
 
 export const CardDetailsAWX = async (req, res) => {
-  const { cardId, authToken } = req.query;
+  const { id } = req.query;
   try {
-    const url =
-      process.env.VITE_AWX_baseUrl + `/api/v1/issuing/cards/${cardId}/details`;
-
+    // const url=process.env.VITE_AWX_baseUrl + `/api/v1/issuing/cards/${id}/details`;
+    const url = `${process.env.baseUrl_zoqq_cards}${constant.awx_cardurl}?id=${id}`;
+    console.log("url: ", url);
     const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
+      // "Content-Type": "application/json",
+      // Authorization: `Bearer ${authToken}`,
+      "x-api-key": process.env.x_api_key_zoqq,
+      "x-product-id": process.env.x_product_id,
+      "x-user-id": req.headers["x-user-id"],
+      "x-request-id":
+        req.headers["x-request-id"] || "211dc6c5-ad34-4534-86df-823e8a1a75ea",
     };
 
     const response = await axios.get(url, { headers });
