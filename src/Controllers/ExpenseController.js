@@ -843,6 +843,7 @@ export const listCardHolders_AWX = async (req, res) => {
 };
 
 // List cards by cardholder ID
+//laxman
 export const listCardsByCardHolderId_AWX = async (req, res) => {
   try {
     // Hardcoded ID for testing in Postman
@@ -879,6 +880,41 @@ export const listCardsByCardHolderId_AWX = async (req, res) => {
     return res.status(500).json({
       status: "BAD_REQUEST",
       message: "An error occurred while listing cards by cardholder ID.",
+    });
+  }
+};
+//Update Card holder
+
+export const updateCardHolder_AWX = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const url = `${process.env.baseUrl_zoqq_cards}${constant.updateCardHolder_awx}?id=${id}`;
+    console.log("URL:", url);
+    const payload = req.body;
+    if (!id) {
+      return res.status(400).json({
+        status: "BAD_REQUEST",
+        message: " ID is required",
+      });
+    }
+    const headers = {
+      "x-api-key": process.env.x_api_key_zoqq,
+      "x-product-id": process.env.x_product_id,
+      "x-user-id": req.headers["x-user-id"],
+      "x-request-id":
+        req.headers["x-request-id"] ||
+        "211dc6c5-ad34-4534-86df-823e8a1a75eafc01f456-45a6-429b-8b91-b656d56328f6",
+    };
+    const response = await axios.patch(url, payload, { headers });
+    if (response?.status === 200) {
+      res.status(200).json(response?.data);
+    }
+  } catch (error) {
+    console.error("Error updating cardHolder:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update cardHolder",
+      error: error.message,
     });
   }
 };
@@ -981,18 +1017,31 @@ export const addVirtualCard_awx = async (req, res) => {
 
 export const updateCard_awx = async (req, res) => {
   try {
-    const authToken = req.headers.authorization;
-    const awxAccountId = req.headers.awxaccountid;
-    const cardId = req.params.card_id;
-    const url = `${process.env.VITE_AWX_baseUrl}${constant.updateCard_awx}/${cardId}/update`;
+    // const authToken = req.headers.authorization;
+    // const awxAccountId = req.headers.awxaccountid;
+    // const cardId = req.params.card_id;
+    const { id } = req.query;
+    const url = `${process.env.baseUrl_zoqq_cards}${constant.updateCard_awx}?id=${id}`;
+    console.log("URL:", url);
     const payload = req.body;
-
+    if (!id) {
+      return res.status(400).json({
+        status: "BAD_REQUEST",
+        message: " ID is required",
+      });
+    }
     const headers = {
-      "Content-Type": "application/json",
-      Authorization: `${authToken}`,
-      "x-on-behalf-of": awxAccountId,
+      // "Content-Type": "application/json",
+      // Authorization: `${authToken}`,
+      // "x-on-behalf-of": awxAccountId,
+      "x-api-key": process.env.x_api_key_zoqq,
+      "x-product-id": process.env.x_product_id,
+      "x-user-id": req.headers["x-user-id"],
+      "x-request-id":
+        req.headers["x-request-id"] ||
+        "211dc6c5-ad34-4534-86df-823e8a1a75eafc01f456-45a6-429b-8b91-b656d56328f6",
     };
-    const response = await axios.post(url, payload, { headers });
+    const response = await axios.patch(url, payload, { headers });
     if (response?.status === 200) {
       res.status(200).json(response?.data);
     }
@@ -1246,40 +1295,38 @@ export const getcvv = async (req, res) => {
       .json({ status: "BAD_REQUEST", message: "An error occurred" });
   }
 };
-
+//Laxman
 export const getcardlimit = async (req, res) => {
-  const { wallethashId, customerhashId, cardhashId } = req.query;
-  console.log(wallethashId);
   try {
-    const url =
-      process.env.base_url +
-      constant.cardurl +
-      "/limit/" +
-      customerhashId +
-      "/" +
-      wallethashId +
-      "/" +
-      cardhashId;
-    console.log(url);
+    const id = req.query.id;
+
+    if (!id) {
+      return res.status(400).json({
+        status: "BAD_REQUEST",
+        message: "Cardholder ID is required",
+      });
+    }
+
+    const url = `${process.env.baseUrl_zoqq_cards}${constant.cardLimit}?id=${id}`;
+    console.log("URL:", url);
+
     const headers = {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.x_api_key,
-      "x-client-name": process.env.x_client_name,
-      "x-client-id": process.env.x_client_id,
-      "x-program-id": process.env.x_program_id,
-      "x-request-id": requestId,
+      "x-api-key": process.env.x_api_key_zoqq,
+      "x-product-id": process.env.x_product_id,
+      "x-user-id": req.headers["x-user-id"],
+      "x-request-id":
+        req.headers["x-request-id"] || "211dc6c5-ad34-4534-86df-823e8a1a75ea",
     };
-    console.log(headers);
 
     const response = await axios.get(url, { headers });
-    console.log(response);
-    res.status(200).json(response.data);
-  } catch (error) {
-    console.error(error);
 
-    res
-      .status(500)
-      .json({ status: "BAD_REQUEST", message: "An error occurred" });
+    return res.status(200).json(response.data);
+  } catch (error) {
+    console.error("AWX Get Card Limit Error:", error.message || error);
+    return res.status(500).json({
+      status: "BAD_REQUEST",
+      message: "An error occurred while fetching card limits.",
+    });
   }
 };
 

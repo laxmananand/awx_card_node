@@ -16,7 +16,9 @@ export const updateBill = "/zoqq/api/v2/expense/bill";
 export const awx_cardurl = "/zoqq/api/v3/card/detail";
 export const fetchsensitivedata = "/api/v1/issuing/cards/";
 export const addcard_awx = "/api/v1/issuing/cards/create";
-export const updateCard_awx = "/api/v1/issuing/cards/";
+export const updateCard_awx = "/zoqq/api/v1/card";
+export const updateCardHolder_awx = "/zoqq/api/v1/card/cardholder";
+export const cardLimit = "/zoqq/api/v1/card/limit";
 
 export const listCards_AWX = "/zoqq/api/v1/card";
 export const listCardHolders_AWX = "/zoqq/api/v1/card/cardholder";

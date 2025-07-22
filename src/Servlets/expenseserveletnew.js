@@ -22,7 +22,9 @@ router.get("/fetchbalances", functions.fetchbalance);
 router.get("/listcards", functions.listcards);
 router.get("/getcardnumber", functions.getcardnumber);
 router.get("/getcvvandexpiry", functions.getcvv);
-router.get("/getcardlimitdata", functions.getcardlimit);
+//laxman
+router.get("/getcardlimit", functions.getcardlimit);
+
 router.get("/setpincard", functions.Setpin);
 router.get("/addcard", functions.Addcard);
 router.get("/setCardlimit", functions.setCardlimit);
@@ -41,7 +43,8 @@ router.get("/listcardsAWX", functions.listCards_AWX);
 router.get("/getsensitavecarddata_awx", functions.getcardsensitavedata_awx);
 router.get("/getcarddata_awx", functions.getcarddata_awx);
 router.post("/createCard_awx", functions.addVirtualCard_awx);
-router.post("/updateCard_awx/:card_id", functions.updateCard_awx);
+//laxman
+router.patch("/updateCard_awx", functions.updateCard_awx);
 
 router.post("/card-token", functions.fetchCardToken);
 router.get("/listCardHolders_AWX", functions.listCardHolders_AWX);
@@ -49,5 +52,7 @@ router.get(
   "/listCardsByCardHolderId_AWX",
   functions.listCardsByCardHolderId_AWX
 );
+
+router.patch("/updateCardHolder_AWX", functions.updateCardHolder_AWX);
 
 export default router;
