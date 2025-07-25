@@ -397,58 +397,117 @@ export const fetchCardholderAWX = async (req, res) => {
 };
 
 //laxman
+// export const fetchCardHolderDetailsAWX = async (req, res) => {
+//   const { id } = req.query;
+//   try {
+//     const url = `${process.env.baseUrl_zoqq_cards}${constant.listCardHolders_AWX}?id=${id}`;
+//     console.log("url: ", url);
+
+//     if (!id) {
+//       return res.status(400).json({
+//         status: "BAD_REQUEST",
+//         message: "id is required",
+//       });
+//     }
+
+//     const headers = {
+//       // "Content-Type": "application/json",
+//       // Authorization: "Bearer " + authToken,
+//       // "x-on-behalf-of": accountId,
+//       "x-api-key": process.env.x_api_key_zoqq,
+//       "x-product-id": process.env.x_product_id,
+//       "x-user-id": req.headers["x-user-id"],
+//       "x-request-id":
+//         req.headers["x-request-id"] || "211dc6c5-ad34-4534-86df-823e8a1a75ea",
+//     };
+
+//     const response = await axios.get(url, { headers });
+
+//     let obj = response.data;
+//     if (obj) {
+//       exportLog(
+//         "Fetch Card Holder Details AWX",
+//         "success",
+//         null,
+//         { url, headers },
+//         obj
+//       );
+//     } else {
+//       exportLog(
+//         "Fetch Card Holder Details AWX",
+//         "error",
+//         null,
+//         { url, headers },
+//         obj
+//       );
+//     }
+
+//     res.status(200).json(response.data);
+//   } catch (error) {
+//     exportLog("Fetch Card Holder Details AWX", "catch", null, null, null);
+
+//     res.status(500).json({ status: "BAD_REQUEST", message: { error } });
+//   }
+// };
+
+
 export const fetchCardHolderDetailsAWX = async (req, res) => {
   const { id } = req.query;
+
+  if (!id) {
+    return res.status(400).json({
+      status: "BAD_REQUEST",
+      message: "id is required",
+    });
+  }
+
+  const url = `${process.env.baseUrl_zoqq_cards}${constant.listCardHolders_AWX}?id=${id}`;
+  console.log("URL:", url);
+
+  const headers = {
+    "x-api-key": process.env.x_api_key_zoqq, // Must be set in .env
+    "x-product-id": process.env.x_product_id,
+    "x-user-id": req.headers["x-user-id"],
+    "x-request-id":
+      req.headers["x-request-id"] || "211dc6c5-ad34-4534-86df-823e8a1a75ea",
+    Authorization: req.headers["authorization"], // pass full Bearer token from client
+    // Optional:
+    // Cookie: req.headers["cookie"], // Uncomment only if required
+  };
+
   try {
-    const url = `${process.env.baseUrl_zoqq_cards}${constant.listCardHolders_AWX}?id=${id}`;
-    console.log("url: ", url);
-
-    if (!id) {
-      return res.status(400).json({
-        status: "BAD_REQUEST",
-        message: "id is required",
-      });
-    }
-
-    const headers = {
-      // "Content-Type": "application/json",
-      // Authorization: "Bearer " + authToken,
-      // "x-on-behalf-of": accountId,
-      "x-api-key": process.env.x_api_key_zoqq,
-      "x-product-id": process.env.x_product_id,
-      "x-user-id": req.headers["x-user-id"],
-      "x-request-id":
-        req.headers["x-request-id"] || "211dc6c5-ad34-4534-86df-823e8a1a75ea",
-    };
-
     const response = await axios.get(url, { headers });
 
-    let obj = response.data;
-    if (obj) {
-      exportLog(
-        "Fetch Card Holder Details AWX",
-        "success",
-        null,
-        { url, headers },
-        obj
-      );
-    } else {
-      exportLog(
-        "Fetch Card Holder Details AWX",
-        "error",
-        null,
-        { url, headers },
-        obj
-      );
-    }
+    const obj = response.data;
 
-    res.status(200).json(response.data);
+    exportLog(
+      "Fetch Card Holder Details AWX",
+      obj ? "success" : "error",
+      null,
+      { url, headers },
+      obj
+    );
+
+    res.status(200).json(obj);
   } catch (error) {
-    exportLog("Fetch Card Holder Details AWX", "catch", null, null, null);
+    console.error("Error fetching card holder details:", error?.message);
 
-    res.status(500).json({ status: "BAD_REQUEST", message: { error } });
+    exportLog(
+      "Fetch Card Holder Details AWX",
+      "catch",
+      error.message,
+      { url, headers },
+      error?.response?.data || error
+    );
+
+    res.status(500).json({
+      status: "ERROR",
+      message: error?.response?.data || "Internal server error",
+    });
   }
 };
+
+
 
 export const fetchCardDetailsAWX = async (req, res) => {
   const { id, authToken } = req.query;
