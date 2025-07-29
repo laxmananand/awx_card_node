@@ -661,6 +661,7 @@ export const GetUserOnboardingStatus = async (req, res) => {
 };
 
 //Send OTP for forget password request
+
 export const sendOTP = async (req, res) => {
   const { email } = req.query;
   try {
@@ -700,6 +701,8 @@ export const sendOTP = async (req, res) => {
     res.status(500).json({ status: "BAD_REQUEST", message: error.message });
   }
 };
+
+//changes
 
 //Reset password cognito
 export const resetPassword = async (req, res) => {
@@ -749,6 +752,8 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ status: "BAD_REQUEST", message: error.message });
   }
 };
+
+
 
 //Generate QR Code
 export const generateQR = async (req, res) => {

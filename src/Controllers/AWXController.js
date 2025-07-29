@@ -450,7 +450,7 @@ export const fetchCardholderAWX = async (req, res) => {
 //   }
 // };
 
-
+//fetch-Cardholder-details
 export const fetchCardHolderDetailsAWX = async (req, res) => {
   const { id } = req.query;
 
